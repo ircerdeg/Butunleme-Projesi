@@ -1,0 +1,142 @@
+---
+title: "İrem Ceren Değirmenci"
+output: pdf_document
+date: "2023-02-21"
+---
+
+library(tidyverse)
+library(dplyr)
+
+#Dosyayı R'da açma
+getwd()
+car_price<-read.csv("car_price.csv")
+View(car_price)
+
+#Dosyadaki verinin özeti
+summary(car_price)
+
+#Verinin ilk 100 satırı
+head(car_price,n=100)
+
+#Verinin sütun adları
+colnames(car_price)
+
+#Satır ve sütun sayısı olarak verinin boyutu
+dim(car_price)
+
+#Veriler hakkında genel bakış
+over_view=pp.ProfileReport(car_price)
+
+#veri tanımlama
+car_price.describe()
+
+
+#Veriden ilk 100 satır içerik
+car_price.head(100)
+car_price.columns
+
+#İsimsiz olanları değiştirerek yeni isim listesi oluşturmak
+car_price.drop('unnamed:0',axis=1,inplace=TRUE)
+new_col= ["cars_names","old_price","price_change","new_price","change_date"]
+car_price.columns=new_col
+car_price.head(5)
+
+#Sütunların veri türünü gösterir
+car_price.dtypes
+
+#sütunun tarihini belirleme
+car_price["change_date"]
+
+car_price["change_date"]=pd.to_datetime(car_price["change_date"])
+car_price["change_date"]
+
+car_price["old_price"]
+
+def to_int (column,string):
+  car_price[column]=car_price[column].str.replace(string,"")
+for i in range (len(car_price[column]))
+:
+  car_price[column][i]=car_price[column][i].replace(",","")
+
+to_int("old_price","EGP")
+car_price["old_price"]=car_price["old_price"].astype(int)
+
+car_price["old_price"]
+
+car_price.head(3)
+
+car_price["price_change"]
+
+#bu sütunda 3 farklı değişken vardır
+car-price["price_change"]=car_price["price_change"].str.replace("EGP","")
+li_str=["trending_up","trending_down"]
+for i in li_str:
+  to_int("price_change",i)
+car_price["price_change"]=car_price["price_change"].astype(int)
+
+car_price["price_change"]
+
+car_price.head(4)
+
+to_int("new_price","EGP")
+car_price["new_price"]=car_price["new_price"].astype(int)
+car_price
+
+car_price["cars_names"]=car_price["cars_names"].astype('string')
+car_price["cars_names"].describe()
+car_price.dtypes
+
+car_price["cars_names"].duplicated().sum()
+
+car_price["cars_names"].nunique()
+
+car_brand=[]
+for i in range(len(car_price["cars_names"])):
+  car_brand.append(car_price["cars_names"][i].split()[0])
+car_price["car_brand"]=car_brand
+car_price
+
+car_price["car_brand"].nunique()
+car_price["car_brand"].value_counts()
+
+#Fiyat artışı sütununa ilişkin ortalama, en büyük değer, en küçük değer ve değerlerin toplamı gibi veriler
+info=pd.DataFrame(car_price.groupby("car_brand").price_change.agg(["count","mean","min","max","sum"]))
+info
+
+#Dizin adını geri yükleyip dizini bir sütuna taşımak
+info.reset_index(inplace=true)
+info
+
+#Fiyat değişimindeki maksimum değişime sahip marka ve değişimlerin toplamı
+pd.DataFrame(info[["car_brand","sum"]][info["sum"]==info["sum"].max()])
+
+#Fiyat değişimindeki minimum değişime sahip marka ve değişimlerin toplamı
+pd.DataFrame(info[["car_brand","sum"]][info["sum"]==info["sum"].min()])
+
+car_price[car_price["car_brand"]=="Mercedes"]
+
+#Fiyat değişimdeki maksimum değişime sahip markanın ortalama, minimum ve maksimum değerleri
+info_mercedes=pd.DataFrame(car_price["price_change"][car_price["car_brand"]=="mercedes"])
+pd.DataFrame(info_mercedes.agg(["mean","min","max"]).astype(int))
+
+#Her araba markası için fiyatlardaki toplam değişimin ilk 30'un verisi
+list=[]
+for i in range(30):
+  list.append(car_price["price_change"][car_price["cars_names"]==info_top30["cars_names"][i]].sum())
+changes_top30=pd.DataFrame(list,columns=["sum_changes_top30"])
+changes_top30
+
+df_old=pd.DataFrame(car_price["old_price"].describe().astype(int))
+df_old.reset_index(inplace=true)
+df_old
+
+plt.bar(df_old[index],df_old["old_price"])
+plt.show()
+
+df.new=pd.DataFrame(car_price["new_price"].describe().astype(int))
+df.new.reset_index(inplace=true)
+df.new
+
+plt.scatter(df_new["index"],df_new["new_price"])
+plt.show()
+
